@@ -1,0 +1,6 @@
+/tyl/postgresql-14.11/contrib/alex/raw_alex/build/CMakeFiles/example.dir
+/tyl/postgresql-14.11/contrib/alex/raw_alex/build/CMakeFiles/benchmark.dir
+/tyl/postgresql-14.11/contrib/alex/raw_alex/build/CMakeFiles/test_alex.dir
+/tyl/postgresql-14.11/contrib/alex/raw_alex/build/CMakeFiles/test.dir
+/tyl/postgresql-14.11/contrib/alex/raw_alex/build/CMakeFiles/edit_cache.dir
+/tyl/postgresql-14.11/contrib/alex/raw_alex/build/CMakeFiles/rebuild_cache.dir

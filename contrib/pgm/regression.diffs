@@ -1,0 +1,63 @@
+diff -U3 /tyl3/postgresql-14.11/contrib/alex/expected/alex.out /tyl3/postgresql-14.11/contrib/alex/results/alex.out
+--- /tyl3/postgresql-14.11/contrib/alex/expected/alex.out	2024-02-17 17:57:50.000000000 +0800
++++ /tyl3/postgresql-14.11/contrib/alex/results/alex.out	2024-03-31 23:39:21.890177709 +0800
+@@ -1,25 +1,40 @@
+ CREATE EXTENSION alex;
+ CREATE TABLE tst (
+-	i	int4
++	i	int4,
++    t	text
+ );
+-INSERT INTO tst SELECT i%10 FROM generate_series(1,2000) i;
++-- INSERT INTO tst SELECT i%1000000, '1' FROM generate_series(1,10000000) i;
++INSERT INTO tst SELECT FLOOR(random() * 1000000)::int, '1' FROM generate_series(1,10000) i;
+ CREATE INDEX alexidx ON tst USING alex (i);
+-
++INFO:  model block count = 2
+ SET enable_seqscan=on;
+ SET enable_bitmapscan=off;
+ SET enable_indexscan=off;
++EXPLAIN (COSTS OFF) SELECT count(*) FROM tst WHERE i = 7;
++       QUERY PLAN        
++-------------------------
++ Aggregate
++   ->  Seq Scan on tst
++         Filter: (i = 7)
++(3 rows)
++
+ SELECT count(*) FROM tst WHERE i = 7;
+  count 
+ -------
+-   200
++     0
+ (1 row)
+ 
++SELECT * FROM tst WHERE i = 7;
++ i | t 
++---+---
++(0 rows)
++
+ SET enable_seqscan=off;
+ SET enable_bitmapscan=on;
+ SET enable_indexscan=on;
+ EXPLAIN (COSTS OFF) SELECT count(*) FROM tst WHERE i = 7;
+-                QUERY PLAN                 
+--------------------------------------------
++                QUERY PLAN                
++------------------------------------------
+  Aggregate
+    ->  Bitmap Heap Scan on tst
+          Recheck Cond: (i = 7)
+@@ -30,5 +45,11 @@
+ SELECT count(*) FROM tst WHERE i = 7;
+  count 
+ -------
+-   200
++     0
+ (1 row)
++
++SELECT * FROM tst WHERE i = 7;
++ i | t 
++---+---
++(0 rows)
++
